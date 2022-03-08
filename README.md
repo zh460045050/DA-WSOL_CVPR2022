@@ -8,19 +8,6 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
 ## Network Structure
 
 ## Getting Starte
-### Requirements
-
-PyTorch >= 0.4.1
-
-Python >= 3.5
-
-torchvision >= 0.2.1
-
-termcolor >= 1.1.0
-
-tensorboardX >= 1.9
-
-opencv >= 3.4
 
 ### Prepare the dataset
 
@@ -33,9 +20,9 @@ opencv >= 3.4
 
 3. Putting these three dataset into "$dataroot" with following layout:
 
---CUB
-----001.Black_footed_Albatross
-----002.Laysan_Albatross
+--CUB \\
+----001.Black_footed_Albatross \\
+----002.Laysan_Albatross \\
 -----....
 --CUBMask
 ------imgs
@@ -77,6 +64,15 @@ bash run_train.sh
 
 1. Downloading our checkpoint from [our google drive][checkpoint_url]. 
 
+
+### Citation
+
+
+### Acknowledgement
+This code and our experiments are conducted based on the release code of [wsolevaluation][EVAL_url] / [transferlearning][tl_url]. Here we thank for their remarkable works.
+
+[EVAL_url]: https://github.com/clovaai/wsolevaluation
+[tl_url]: https://github.com/jindongwang/transferlearning
 
 
 [paper_url]: https://arxiv.org/abs/2203.01714
