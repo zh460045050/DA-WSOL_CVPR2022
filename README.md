@@ -20,41 +20,45 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
 
 3. Putting these three dataset into "$dataroot" with following layout:
 
---CUB \\
-----001.Black_footed_Albatross \\
-----002.Laysan_Albatross \\
------....
---CUBMask
-------imgs
---------001.Black_footed_Albatross
---------002.Laysan_Albatross
---------....
-------masks
---------001.Black_footed_Albatross
---------002.Laysan_Albatross
---------....
---OpenImages
-----train
-------01226z
-------018xm
-------....
-----val
-------01226z
-------018xm
--------....
-----test
-------01226z
-------018xm
-------....
---ILSVRC
-----train
-------n01440764
-------n01443537
-------....
-----val
-------ILSVRC2012_val_00000001.JPEG
-------ILSVRC2012_val_00000002.JPEG
-------....
+|--CUB 
+|    |--001.Black_footed_Albatross
+|    |--002.Laysan_Albatross
+|    |---....
+|    
+|--CUBMask
+|    |--imgs
+|    |  |--001.Black_footed_Albatross
+|    |  |--002.Laysan_Albatross
+|    |  |--....
+|    |
+|    |--masks
+|       |--001.Black_footed_Albatross
+|       |--002.Laysan_Albatross
+|       |--....
+|  
+|--OpenImages
+|   |--train
+|   |   |--01226z
+|   |   |--018xm
+|   |   |--....
+|   |--val
+|   |   |--01226z
+|   |   |--018xm
+|   |   |--....
+|   |--test
+|       |--01226z
+|       |--018xm
+|       |--....
+|   
+|--ILSVRC
+    |--train
+    |   |---n01440764
+    |   |---01443537
+    |   |---...
+    |--val
+        |--ILSVRC2012_val_00000001.JPEG
+        |-ILSVRC2012_val_00000002.JPEG
+        |....
 
 ### Training our DA-WSOL
 
