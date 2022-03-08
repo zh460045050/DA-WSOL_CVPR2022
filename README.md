@@ -20,45 +20,45 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
 
 3. Putting these three dataset into "$dataroot" with following layout:
 
-|--CUB 
-|    |--001.Black_footed_Albatross
-|    |--002.Laysan_Albatross
-|    |---....
-|    
-|--CUBMask
-|    |--imgs
-|    |  |--001.Black_footed_Albatross
-|    |  |--002.Laysan_Albatross
-|    |  |--....
-|    |
-|    |--masks
-|       |--001.Black_footed_Albatross
-|       |--002.Laysan_Albatross
-|       |--....
-|  
-|--OpenImages
-|   |--train
-|   |   |--01226z
-|   |   |--018xm
-|   |   |--....
-|   |--val
-|   |   |--01226z
-|   |   |--018xm
-|   |   |--....
-|   |--test
-|       |--01226z
-|       |--018xm
-|       |--....
-|   
-|--ILSVRC
-    |--train
-    |   |---n01440764
-    |   |---01443537
-    |   |---...
+|--CUB <enter>
+|    |--001.Black_footed_Albatross<enter>
+|    |--002.Laysan_Albatross<enter>
+|    |---....<enter>
+|    <enter>
+|--CUBMask<enter>
+|    |--imgs<enter>
+|    |  |--001.Black_footed_Albatross<enter>
+|    |  |--002.Laysan_Albatross<enter>
+|    |  |--....<enter>
+|    |<enter>
+|    |--masks<enter>
+|       |--001.Black_footed_Albatross<enter>
+|       |--002.Laysan_Albatross<enter>
+|       |--....<enter>
+|  <enter>
+|--OpenImages<enter>
+|   |--train<enter>
+|   |   |--01226z<enter>
+|   |   |--018xm<enter>
+|   |   |--....<enter>
+|   |--val<enter>
+|   |   |--01226z<enter>
+|   |   |--018xm<enter>
+|   |   |--....<enter>
+|   |--test<enter>
+|       |--01226z<enter>
+|       |--018xm<enter>
+|       |--....<enter>
+|   <enter>
+|--ILSVRC<enter>
+    |--train<enter>
+    |   |---n01440764<enter>
+    |   |---01443537<enter>
+    |   |---...<enter>
     |--val
-        |--ILSVRC2012_val_00000001.JPEG
-        |-ILSVRC2012_val_00000002.JPEG
-        |....
+        |--ILSVRC2012_val_00000001.JPEG<enter>
+        |--ILSVRC2012_val_00000002.JPEG<enter>
+        |--....<enter>
 
 ### Training our DA-WSOL
 
