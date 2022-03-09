@@ -19,46 +19,45 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
      <br/>ILSVRC dataset: [source_images][ilsvrc_url]
 
 3. Putting these three dataset into "$dataroot" with following layout:
-
-<br/>|--CUB 
-<br/>|    |--001.Black_footed_Albatross
-<br/>|    |--002.Laysan_Albatross
-<br/>|    |---....
-<br/>|    
-<br/>|--CUBMask
-<br/>|    |--imgs
-<br/>|    |  |--001.Black_footed_Albatross
-<br/>|    |  |--002.Laysan_Albatross
-<br/>|    |  |--....
-<br/>|    |
-<br/>|    |--masks
-<br/>|       |--001.Black_footed_Albatross
-<br/>|       |--002.Laysan_Albatross
-<br/>|       |--....
-<br/>|  
-<br/>|--OpenImages
-<br/>|   |--train
-<br/>|   |   |--01226z
-<br/>|   |   |--018xm
-<br/>|   |   |--....
-<br/>|   |--val
-<br/>|   |   |--01226z
-<br/>|   |   |--018xm
-<br/>|   |   |--....
-<br/>|   |--test
-<br/>|       |--01226z
-<br/>|       |--018xm
-<br/>|       |--....
-<br/>|   
-<br/>|--ILSVRC
-<br/>    |--train
-<br/>    |   |---n01440764
-<br/>    |   |---01443537
-<br/>    |   |---...
-<br/>    |--val
-<br/>        |--ILSVRC2012_val_00000001.JPEG
-<br/>        |--ILSVRC2012_val_00000002.JPEG
-<br/>        |--....
+     <br/>|--CUB 
+     <br/>|    |--001.Black_footed_Albatross
+     <br/>|    |--002.Laysan_Albatross
+     <br/>|    |---....
+     <br/>|    
+     <br/>|--CUBMask
+     <br/>|    |--imgs
+     <br/>|    |  |--001.Black_footed_Albatross
+     <br/>|    |  |--002.Laysan_Albatross
+     <br/>|    |  |--....
+     <br/>|    |
+     <br/>|    |--masks
+     <br/>|       |--001.Black_footed_Albatross
+     <br/>|       |--002.Laysan_Albatross
+     <br/>|       |--....
+     <br/>|  
+     <br/>|--OpenImages
+     <br/>|   |--train
+     <br/>|   |   |--01226z
+     <br/>|   |   |--018xm
+     <br/>|   |   |--....
+     <br/>|   |--val
+     <br/>|   |   |--01226z
+     <br/>|   |   |--018xm
+     <br/>|   |   |--....
+     <br/>|   |--test
+     <br/>|       |--01226z
+     <br/>|       |--018xm
+     <br/>|       |--....
+     <br/>|   
+     <br/>|--ILSVRC
+     <br/>    |--train
+     <br/>    |   |---n01440764
+     <br/>    |   |---01443537
+     <br/>    |   |---...
+     <br/>    |--val
+     <br/>        |--ILSVRC2012_val_00000001.JPEG
+     <br/>        |--ILSVRC2012_val_00000002.JPEG
+     <br/>        |--....
 
 ### Training our DA-WSOL
 
