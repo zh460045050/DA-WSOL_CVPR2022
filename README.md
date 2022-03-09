@@ -19,7 +19,7 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
      <br/>ILSVRC dataset: [source_images][ilsvrc_url]
 
 3. Putting these three dataset into "$dataroot" with following layout:
-4. 
+ 
      <br/>|--CUB 
      <br/>|    |--001.Black_footed_Albatross
      <br/>|    |--002.Laysan_Albatross
