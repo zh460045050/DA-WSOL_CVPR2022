@@ -19,11 +19,12 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
      <br/>ILSVRC dataset: [source_images][ilsvrc_url]
 
 3. Putting these three dataset into "$dataroot" with following layout:
+4. 
      <br/>|--CUB 
      <br/>|    |--001.Black_footed_Albatross
      <br/>|    |--002.Laysan_Albatross
-     <br/>|    |---....
-     <br/>|    
+     <br/>|    |--....
+
      <br/>|--CUBMask
      <br/>|    |--imgs
      <br/>|    |  |--001.Black_footed_Albatross
@@ -34,7 +35,7 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
      <br/>|       |--001.Black_footed_Albatross
      <br/>|       |--002.Laysan_Albatross
      <br/>|       |--....
-     <br/>|  
+
      <br/>|--OpenImages
      <br/>|   |--train
      <br/>|   |   |--01226z
@@ -48,7 +49,7 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
      <br/>|       |--01226z
      <br/>|       |--018xm
      <br/>|       |--....
-     <br/>|   
+
      <br/>|--ILSVRC
      <br/>    |--train
      <br/>    |   |---n01440764
