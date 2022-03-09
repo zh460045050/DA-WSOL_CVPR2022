@@ -14,9 +14,9 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
 1. Downloading the train/test split and bounding-boxes annotation for CUB-200, OpenImages, ILSVRC dataset from [our google drive][meta_url]. 
 
 2. Dowinloading these three datasets from: 
-     CUB-200 dataset: [source images][cub_image_url],  [segmentation mask][cub_mask_url]
-     OpenImages dataset: [source images][open_image_url], [segmentation mask][open_mask_url]
-     ILSVRC dataset: [source_images][ilsvrc_url]
+     <br/>CUB-200 dataset: [source images][cub_image_url],  [segmentation mask][cub_mask_url]
+     <br/>OpenImages dataset: [source images][open_image_url], [segmentation mask][open_mask_url]
+     <br/>ILSVRC dataset: [source_images][ilsvrc_url]
 
 3. Putting these three dataset into "$dataroot" with following layout:
 
