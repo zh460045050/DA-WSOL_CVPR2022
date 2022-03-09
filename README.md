@@ -32,9 +32,9 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
      <br/>|    |  |--....
      <br/>|    |
      <br/>|    |--masks
-     <br/>|       |--001.Black_footed_Albatross
-     <br/>|       |--002.Laysan_Albatross
-     <br/>|       |--....
+     <br/>|    |   |--001.Black_footed_Albatross
+     <br/>|    |   |--002.Laysan_Albatross
+     <br/>|    |   |--....
 
      <br/>|--OpenImages
      <br/>|   |--train
@@ -46,9 +46,9 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
      <br/>|   |   |--018xm
      <br/>|   |   |--....
      <br/>|   |--test
-     <br/>|       |--01226z
-     <br/>|       |--018xm
-     <br/>|       |--....
+     <br/>|   |    |--01226z
+     <br/>|   |    |--018xm
+     <br/>|   |    |--....
 
      <br/>|--ILSVRC
      <br/>    |--train
@@ -56,9 +56,9 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
      <br/>    |   |---01443537
      <br/>    |   |---...
      <br/>    |--val
-     <br/>        |--ILSVRC2012_val_00000001.JPEG
-     <br/>        |--ILSVRC2012_val_00000002.JPEG
-     <br/>        |--....
+     <br/>    |    |--ILSVRC2012_val_00000001.JPEG
+     <br/>    |    |--ILSVRC2012_val_00000002.JPEG
+     <br/>    |    |--....
 
 ### Training our DA-WSOL
 
