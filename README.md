@@ -80,4 +80,6 @@ This code and our experiments are conducted based on the release code of [wsolev
 
 
 [paper_url]: https://arxiv.org/abs/2203.01714
+[checkpoint_url]: https://drive.google.com/drive/folders/1NLrTq8kllz46ESfBSWJFZ638PKPDXLQ1?usp=sharing
+[meta_url]: https://drive.google.com/drive/folders/1xQAjoLyD96vRd6OSF72TAGDdGOLVJ0yE?usp=sharing
 
