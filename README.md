@@ -11,12 +11,12 @@ Official implementation of the paper  ``[Weakly Supervised Object Localization a
 
 ### Prepare the dataset
 
-1. Downloading the train/test split for CUB-200, OpenImages, ILSVRC dataset from [our google drive][meta_url]. 
+1. Downloading the train/test split and bounding-boxes annotation for CUB-200, OpenImages, ILSVRC dataset from [our google drive][meta_url]. 
 
-2. Dowinloading these three datasets from their website: 
-     CUB-200 dataset: [CUB-200][cub]
-     OpenImages dataset: [OpenImages][open]
-     ILSVRC dataset: [ILSVRC][ilsvrc]
+2. Dowinloading these three datasets from: 
+     CUB-200 dataset: [source images][cub_image_url],  [segmentation mask][cub_mask_url]
+     OpenImages dataset: [source images][open_image_url], [segmentation mask][open_mask_url]
+     ILSVRC dataset: [source_images][ilsvrc_url]
 
 3. Putting these three dataset into "$dataroot" with following layout:
 
@@ -82,4 +82,8 @@ This code and our experiments are conducted based on the release code of [wsolev
 [paper_url]: https://arxiv.org/abs/2203.01714
 [checkpoint_url]: https://drive.google.com/drive/folders/1NLrTq8kllz46ESfBSWJFZ638PKPDXLQ1?usp=sharing
 [meta_url]: https://drive.google.com/drive/folders/1xQAjoLyD96vRd6OSF72TAGDdGOLVJ0yE?usp=sharing
+[cub_image_url]: https://drive.google.com/file/d/1U6cwKHS65wayT9FFvoLIA8cn1k0Ot2M1/view?usp=drive_open
+[open_image_url]: https://drive.google.com/file/d/1oOb4WQ-lb8SYppHEg3lWnpHk1X8WVO4e/view
+[open_mask_url]: https://drive.google.com/file/d/1eu1YvcZlsEalhXTS_5Ni5tkImCliIPie/view
+[ilsvrc_url]: https://image-net.org
 
