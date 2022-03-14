@@ -109,12 +109,12 @@ Our DA-WSOL pipeline can be easily engaged into current WSOL methods to train th
 
 ### Citation
 
-@article{DAWSOL,
-  title={Weakly Supervised Object Localization as Domain Adaption},
-  author={Zhu, Lei and She, Qi and Chen, Qian and You, Yunfei and Wang, Boyu and Lu, Yanye},
-  journal={arXiv preprint arXiv:2203.01714},
-  year={2022}
-}
+@article\{DAWSOL,</br>
+  title=\{Weakly Supervised Object Localization as Domain Adaption\},</br>
+  author=\{Zhu, Lei and She, Qi and Chen, Qian and You, Yunfei and Wang, Boyu and Lu, Yanye\},</br>
+  journal=\{arXiv preprint arXiv:2203.01714\},</br>
+  year=\{2022\}</br>
+\}
 
 
 ### Acknowledgement
