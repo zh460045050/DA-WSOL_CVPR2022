@@ -28,11 +28,25 @@ import torch.nn as nn
 from libs.evaluation import BoxEvaluator
 from libs.evaluation import MaskEvaluator
 from libs.evaluation import configure_metadata
+from libs.evaluation import MultiClassEvaluator
 from libs.util import t2n
 import matplotlib.pyplot as plt
 import torch
 import torch.nn.functional as F
 from skimage.segmentation import mark_boundaries
+
+##
+from libs.bps.bp import BackPropagation
+from libs.bps.gbp import GuidedBackPropagation
+from libs.bps.grad_cam import GradCAM
+from libs.bps.grad_cam_pp import GradCAMpp
+from libs.bps.dynamic_bp import DynamicBP 
+from libs.bps.pcs import PCS
+from libs.bps.bagcams import BagCAMs
+from libs.bps.cbm_ablation import CBM_Ablation
+from libs.bps.cbm_pp import CBM_pp
+from libs.bps.dynamic_cbm import Dynamic_CBM
+from libs.bps.cic import CIC
 
 _IMAGENET_MEAN = [0.485, .456, .406]
 _IMAGENET_STDDEV = [.229, .224, .225]
@@ -123,7 +137,7 @@ def normalize_scoremap(cam):
 class CAMComputer(object):
     def __init__(self, extractor, classifier, loader, metadata_root, mask_root,
                  iou_threshold_list, dataset_name, split,
-                 multi_contour_eval, cam_curve_interval=.001, log_folder=None, wsol_method='cam'):
+                 multi_contour_eval, cam_curve_interval=.001, log_folder=None, wsol_method='cam', post_method='cam', target_layer='layer3', is_vis=False):
         self.extractor = extractor
         self.classifier = classifier
         self.extractor.eval()
@@ -131,18 +145,44 @@ class CAMComputer(object):
         self.loader = loader
         self.split = split
         self.log_folder = log_folder
+        self.vis = is_vis
         #
         self.wsol_method = wsol_method
+        self.post_method = post_method
+        self.target_layer = target_layer
         #
+        if self.post_method == "dbp":
+            self.gcam = DynamicBP(extractor=self.extractor, classifier=self.classifier)
+        elif self.post_method == 'bp':
+            self.gcam = BackPropagation(extractor=self.extractor, classifier=self.classifier)
+        elif self.post_method == 'gbp':
+            self.gcam = GuidedBackPropagation(extractor=self.extractor, classifier=self.classifier)
+        elif self.post_method == 'GradCAM':
+            self.gcam = GradCAM(extractor=self.extractor, classifier=self.classifier)
+        elif self.post_method == 'GradCAM++':
+            self.gcam = GradCAMpp(extractor=self.extractor, classifier=self.classifier)
+        elif self.post_method == 'PCS':
+            self.gcam = PCS(extractor=self.extractor, classifier=self.classifier)
+        elif self.post_method == 'BagCAMs':
+            self.gcam = BagCAMs(extractor=self.extractor, classifier=self.classifier)
+        elif self.post_method == 'cbm_ablation':
+            self.gcam = CBM_Ablation(extractor=self.extractor, classifier=self.classifier)
+        elif self.post_method == 'cbm++':
+            self.gcam = CBM_pp(extractor=self.extractor, classifier=self.classifier)
+        elif self.post_method == 'dcbm':
+            self.gcam = Dynamic_CBM(extractor=self.extractor, classifier=self.classifier)
+        elif self.post_method == 'cic':
+            self.gcam = CIC(extractor=self.extractor, classifier=self.classifier)
+
         if dataset_name == "CUB":
             metadata_mask = configure_metadata('metadata/CUBMask/' + split)
         metadata = configure_metadata(metadata_root)
         cam_threshold_list = list(np.arange(0, 1, cam_curve_interval))
         self.dataset_name = dataset_name
 
-        if dataset_name == "OpenImages" or dataset_name == "ISIC":
-            self.evaluator_mask = {"OpenImages": MaskEvaluator,
-                            "ISIC": MaskEvaluator,
+        if dataset_name == "ILSVRC":
+            self.evaluator_boxes = {
+                            "ILSVRC": BoxEvaluator,
                             }[dataset_name](metadata=metadata,
                                             dataset_name=dataset_name,
                                             split=split,
@@ -169,10 +209,17 @@ class CAMComputer(object):
                                     mask_root=mask_root,
                                     multi_contour_eval=multi_contour_eval,
                                     scoremap_root=ospj(self.log_folder, 'scoremaps'))
+        elif self.dataset_name == "VOC":
+            self.evaluator_mask = MultiClassEvaluator(metadata=metadata,
+                                            dataset_name=dataset_name,
+                                            split=split,
+                                            cam_threshold_list=cam_threshold_list,
+                                            iou_threshold_list=iou_threshold_list,
+                                            mask_root=mask_root,
+                                            multi_contour_eval=multi_contour_eval,
+                                            scoremap_root=ospj(self.log_folder, 'scoremaps'))
         else:
-            self.evaluator_boxes = {
-                            "ILSVRC": BoxEvaluator,
-                            }[dataset_name](metadata=metadata,
+            self.evaluator_mask = MaskEvaluator(metadata=metadata,
                                             dataset_name=dataset_name,
                                             split=split,
                                             cam_threshold_list=cam_threshold_list,
@@ -183,26 +230,58 @@ class CAMComputer(object):
 
 
     def compute_and_evaluate_cams(self):
-        print("Computing and evaluating cams.")
+
+        print("Computing and evaluating %s ."%(self.post_method))
         for images, targets, image_ids in self.loader:
             image_size = images.shape[2:]
             images = images.cuda()
+            targets = targets.cuda()
         
-            pixel_features = self.extractor(images)
-            cams = self.classifier(pixel_features, targets, return_cam=True)
-            cams = t2n(cams)
+            if self.post_method == 'cam':
+                pixel_features = self.extractor(images)
+                cams = self.classifier(pixel_features, targets, return_cam=True)
+                if len(targets.shape) == 2:
+                    cams = F.interpolate(
+                        cams, image_size, mode="bilinear", align_corners=False
+                    )
+                    from libs.wsol.util import normalize_tensor
+                    cams = normalize_tensor(cams.detach().clone())
+                cams = t2n(cams)
 
-            image_features = nn.AdaptiveAvgPool2d(1)(pixel_features)
-            logits = self.classifier(image_features)
-
+                image_features = nn.AdaptiveAvgPool2d(1)(pixel_features)
+                logits = self.classifier(image_features)
+            else:
+                logits, probs = self.gcam.forward(images)
+                #predicts = torch.argmax(logits, dim=1)
+                _, ids = probs.sort(dim=1, descending=True)
+                #print(ids.shape, targets.shape)
+                self.gcam.backward(ids=targets)
+                if self.target_layer == "":
+                    #cams = self.gcam.generate_all_layer().squeeze(1)
+                    cams = t2n(self.gcam.generate_all_layer().squeeze(1))
+                else:
+                    cams = t2n(self.gcam.generate(target_layer=self.target_layer).squeeze(1))
+                    #cams = self.gcam.generate(target_layer=self.target_layer).squeeze(1)
             predicts = torch.argmax(logits, dim=1)
-            predicts = t2n(predicts.view(predicts.shape[0], predicts.shape[1]))
+            
+            predicts = t2n(predicts.view(predicts.shape[0], 1))
             targets = t2n(targets)
+            
+            #print(targets)
 
             for cam, target, predict, image, image_id in zip(cams, targets, predicts, images, image_ids):
-                cam_resized = cv2.resize(cam, image_size,
-                                        interpolation=cv2.INTER_CUBIC)
-                cam_normalized = normalize_scoremap(cam_resized)
+                #print(aaa)
+                #cam = t2n(cam)
+                #predict = t2n(predict)
+                #target = t2n(target)
+                if len(targets.shape) != 2:
+                    #print("!!!")
+                    cam_resized = cv2.resize(cam, image_size,
+                                            interpolation=cv2.INTER_CUBIC)
+                    #print(cam_resized.shape)
+                    cam_normalized = normalize_scoremap(cam_resized)
+                else:
+                    cam_normalized = cam
                 if self.split in ('val', 'test'):
                     cam_path = ospj(self.log_folder, 'scoremaps', image_id)
                     pred_path = ospj(self.log_folder, 'predicts', image_id)
@@ -216,26 +295,35 @@ class CAMComputer(object):
                     np.save(ospj(cam_path), cam_normalized)
                     np.save(ospj(pred_path), predict)
                     np.save(ospj(gt_path), target)
-                    '''
+                    
                     ###
-                    vis_image = image.cpu().data * np.array(_IMAGENET_STDDEV).reshape([3, 1, 1]) + np.array(_IMAGENET_MEAN).reshape([3, 1, 1])
-                    vis_image = np.int64(vis_image * 255)
-                    vis_image[vis_image > 255] = 255
-                    vis_image[vis_image < 0] = 0
-                    vis_image = np.uint8(vis_image)
-                    vis_path = ospj(self.log_folder, 'vis', image_id)
-                    if not os.path.exists(ospd(vis_path)):
-                        os.makedirs(ospd(vis_path))
-                    plt.imsave(ospj(vis_path)+".png", generate_vis(cam_normalized, vis_image).transpose(1, 2, 0))
+                    if not (self.dataset_name == "ILSVRC" and self.split == "val"): 
+                        if self.vis:
+                            vis_image = image.cpu().data * np.array(_IMAGENET_STDDEV).reshape([3, 1, 1]) + np.array(_IMAGENET_MEAN).reshape([3, 1, 1])
+                            vis_image = np.int64(vis_image * 255)
+                            vis_image[vis_image > 255] = 255
+                            vis_image[vis_image < 0] = 0
+                            vis_image = np.uint8(vis_image)
+                            vis_path = ospj(self.log_folder, 'vis', image_id)
+                            #print(target.shape, cam_normalized.shape)
+                            if not os.path.exists(ospd(vis_path)):
+                                os.makedirs(ospd(vis_path))
+                            if len(targets.shape) == 2:
+                                for i, flag in enumerate(target):
+                                    if flag:
+                                        plt.imsave(ospj(vis_path[:-4])+ "_" + str(i) + ".png", generate_vis(cam_normalized[i], vis_image).transpose(1, 2, 0))
+                            else:
+                                plt.imsave(ospj(vis_path)+".png", generate_vis(cam_normalized, vis_image).transpose(1, 2, 0))
                     ###
-                    '''
+                    
             #np.save(ospj(cam_path), cam_normalized)
             performance={}
-            if self.dataset_name == "OpenImages" or self.dataset_name == "ISIC":
-                self.evaluator_mask.accumulate(cam_normalized, image_id)
-                pxap, iou = self.evaluator_mask.compute()
-                performance['pxap'] = pxap
-                performance['iou'] = iou
+            if self.dataset_name == "ILSVRC":
+                self.evaluator_boxes.accumulate(cam_normalized, image_id)
+                gt_known = self.evaluator_boxes.compute()
+                top_1 = self.evaluator_boxes.compute_top1()
+                performance['gt_known'] = gt_known
+                performance['top_1'] = top_1
 
             elif self.dataset_name == "CUB":
                 if self.split == "test":
@@ -251,10 +339,9 @@ class CAMComputer(object):
                 performance['top_1'] = top_1
                 
             else:
-                self.evaluator_boxes.accumulate(cam_normalized, image_id)
-                gt_known = self.evaluator_boxes.compute()
-                top_1 = self.evaluator_boxes.compute_top1()
-                performance['gt_known'] = gt_known
-                performance['top_1'] = top_1
+                self.evaluator_mask.accumulate(cam_normalized, image_id)
+                pxap, iou = self.evaluator_mask.compute()
+                performance['pxap'] = pxap
+                performance['iou'] = iou
 
         return performance
