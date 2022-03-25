@@ -107,6 +107,34 @@ Our DA-WSOL pipeline can be easily engaged into current WSOL methods to train th
 
 6. Test log files and test scores are save in "--save_dir"
 
+### Performance
+
+[2022/0325] We have solved some issues in our codes, now the corresponding scores of our checkpoints are listed.
+
+#### ILSVRC Dataset
+
+|| Top-1 Loc | GT-known Loc | MaxBoxAccV2 | 
+| :----: |:----: |:----: |:----: |
+|DA-WSOL-ResNet-One-Stage| 43.26 | 70.27 | 68.23 | 
+|DA-WSOL-ResNet-Two-Stage| 55.84 | 70.27 | 68.23 | 
+|DA-WSOL-InceptionV3| 52.70 | 69.11 | 64.75 | 
+
+#### CUB-200 Dataset
+
+|| Top-1 Loc | GT-known Loc | MaxBoxAccV2| pIoU | PxAP
+| :----: |:----: |:----: |:----: |:----: |:----: |
+|DA-WSOL-ResNet-One-Stage| 62.40 | 81.83 | 69.87 | 56.18 | 74.70 |
+|DA-WSOL-ResNet-Two-Stage| 66.65 | 81.83 | 69.87 | 56.18 | 74.70 |
+|DA-WSOL-InceptionV3| 65.94 | 80.03 | 68.01 | 51.81| 71.03 |
+
+#### OpenImage dataset
+
+|| pIoU | PxAP |
+| :----: |:----: |:----: |
+|DA-WSOL-ResNet| 49.68 | 65.42 | 
+|DA-WSOL-InceptionV3| 48.01 | 64.46 |
+
+
 ### Citation
 
 @article\{DAWSOL,</br>
