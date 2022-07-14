@@ -117,7 +117,7 @@ Our DA-WSOL pipeline can be easily engaged into current WSOL methods to train th
 | :----: |:----: |:----: |:----: |
 |DA-WSOL-ResNet-One-Stage| 43.26 | 70.27 | 68.23 | 
 |DA-WSOL-ResNet-Two-Stage| 55.84 | 70.27 | 68.23 | 
-|DA-WSOL-InceptionV3| 52.70 | 69.11 | 64.75 | 
+|DA-WSOL-InceptionV3-Two-Stage| 52.70 | 69.11 | 64.75 | 
 
 #### CUB-200 Dataset
 
@@ -125,7 +125,7 @@ Our DA-WSOL pipeline can be easily engaged into current WSOL methods to train th
 | :----: |:----: |:----: |:----: |:----: |:----: |
 |DA-WSOL-ResNet-One-Stage| 62.40 | 81.83 | 69.87 | 56.18 | 74.70 |
 |DA-WSOL-ResNet-Two-Stage| 66.65 | 81.83 | 69.87 | 56.18 | 74.70 |
-|DA-WSOL-InceptionV3| 65.94 | 80.03 | 68.01 | 51.81| 71.03 |
+|DA-WSOL-InceptionV3-Two-Stage| 65.94 | 80.03 | 68.01 | 51.81| 71.03 |
 
 #### OpenImage dataset
 
