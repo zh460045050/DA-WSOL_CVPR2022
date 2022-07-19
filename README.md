@@ -111,7 +111,7 @@ Our DA-WSOL pipeline can be easily engaged into current WSOL methods to train th
 
 [2022/0325] We have solved some issues in our codes, now the corresponding scores of our checkpoints are listed.
 
-[2022/0719] Including more post-method for generating localization maps for DA-WSOL (refer to our latest work [BagCAMs][bagcams_url])
+[2022/0719] Including more post-method to generate localization maps for DA-WSOL (refer to our latest work [BagCAMs][bagcams_url])
 
 #### ILSVRC Dataset
 
