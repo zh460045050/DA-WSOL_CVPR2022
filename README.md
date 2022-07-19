@@ -110,6 +110,7 @@ Our DA-WSOL pipeline can be easily engaged into current WSOL methods to train th
 ### Performance
 
 [2022/0325] We have solved some issues in our codes, now the corresponding scores of our checkpoints are listed.
+[2022/0719] Including more post-method for generating localization maps for DA-WSOL (refer to our latest work [BagCAMs][bagcams_url])
 
 #### ILSVRC Dataset
 
@@ -145,12 +146,20 @@ Our DA-WSOL pipeline can be easily engaged into current WSOL methods to train th
   year=\{2022\}</br>
 \}
 
+@article\{BagCAMs,</br>
+  title=\{Bagging Regional Classification Activation Maps for Weakly Supervised Object Localization\},</br>
+  author=\{Zhu, Lei and Chen, Qian and Jin, Lujia and You, Yunfei and Lu, Yanye\},</br>
+  journal=\{arXiv preprint arXiv:2207.07818\},</br>
+  year=\{2022\}</br>
+\}
+
 
 ### Acknowledgement
 This code and our experiments are conducted based on the release code of [wsolevaluation][EVAL_url] / [transferlearning][tl_url]. Here we thank for their remarkable works.
 
 [EVAL_url]: https://github.com/clovaai/wsolevaluation
 [tl_url]: https://github.com/jindongwang/transferlearning
+[bagcams_url]: https://github.com/zh460045050/BagCAMs
 
 
 [paper_url]: https://arxiv.org/abs/2203.01714
