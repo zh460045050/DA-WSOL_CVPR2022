@@ -138,29 +138,6 @@ class CAMComputer(object):
         self.post_method = post_method
         self.target_layer = target_layer
         #
-        if self.post_method == "dbp":
-            self.gcam = DynamicBP(extractor=self.extractor, classifier=self.classifier)
-        elif self.post_method == 'bp':
-            self.gcam = BackPropagation(extractor=self.extractor, classifier=self.classifier)
-        elif self.post_method == 'gbp':
-            self.gcam = GuidedBackPropagation(extractor=self.extractor, classifier=self.classifier)
-        elif self.post_method == 'GradCAM':
-            self.gcam = GradCAM(extractor=self.extractor, classifier=self.classifier)
-        elif self.post_method == 'GradCAM++':
-            self.gcam = GradCAMpp(extractor=self.extractor, classifier=self.classifier)
-        elif self.post_method == 'PCS':
-            self.gcam = PCS(extractor=self.extractor, classifier=self.classifier)
-        elif self.post_method == 'BagCAMs':
-            self.gcam = BagCAMs(extractor=self.extractor, classifier=self.classifier)
-        elif self.post_method == 'cbm_ablation':
-            self.gcam = CBM_Ablation(extractor=self.extractor, classifier=self.classifier)
-        elif self.post_method == 'cbm++':
-            self.gcam = CBM_pp(extractor=self.extractor, classifier=self.classifier)
-        elif self.post_method == 'dcbm':
-            self.gcam = Dynamic_CBM(extractor=self.extractor, classifier=self.classifier)
-        elif self.post_method == 'cic':
-            self.gcam = CIC(extractor=self.extractor, classifier=self.classifier)
-
         if dataset_name == "CUB":
             metadata_mask = configure_metadata('metadata/CUBMask/' + split)
         metadata = configure_metadata(metadata_root)
@@ -237,18 +214,6 @@ class CAMComputer(object):
 
                 image_features = nn.AdaptiveAvgPool2d(1)(pixel_features)
                 logits = self.classifier(image_features)
-            else:
-                logits, probs = self.gcam.forward(images)
-                #predicts = torch.argmax(logits, dim=1)
-                _, ids = probs.sort(dim=1, descending=True)
-                #print(ids.shape, targets.shape)
-                self.gcam.backward(ids=targets)
-                if self.target_layer == "":
-                    #cams = self.gcam.generate_all_layer().squeeze(1)
-                    cams = t2n(self.gcam.generate_all_layer().squeeze(1))
-                else:
-                    cams = t2n(self.gcam.generate(target_layer=self.target_layer).squeeze(1))
-                    #cams = self.gcam.generate(target_layer=self.target_layer).squeeze(1)
             predicts = torch.argmax(logits, dim=1)
             
             predicts = t2n(predicts.view(predicts.shape[0], 1))
@@ -269,7 +234,7 @@ class CAMComputer(object):
                     cam_normalized = normalize_scoremap(cam_resized)
                 else:
                     cam_normalized = cam
-                if self.split in ('val', 'test'):
+                if true:
                     cam_path = ospj(self.log_folder, 'scoremaps', image_id)
                     pred_path = ospj(self.log_folder, 'predicts', image_id)
                     gt_path = ospj(self.log_folder, 'image_gts', image_id)
@@ -282,26 +247,6 @@ class CAMComputer(object):
                     np.save(ospj(cam_path), cam_normalized)
                     np.save(ospj(pred_path), predict)
                     np.save(ospj(gt_path), target)
-                    
-                    ###
-                    if not (self.dataset_name == "ILSVRC" and self.split == "val"): 
-                        if self.vis:
-                            vis_image = image.cpu().data * np.array(_IMAGENET_STDDEV).reshape([3, 1, 1]) + np.array(_IMAGENET_MEAN).reshape([3, 1, 1])
-                            vis_image = np.int64(vis_image * 255)
-                            vis_image[vis_image > 255] = 255
-                            vis_image[vis_image < 0] = 0
-                            vis_image = np.uint8(vis_image)
-                            vis_path = ospj(self.log_folder, 'vis', image_id)
-                            #print(target.shape, cam_normalized.shape)
-                            if not os.path.exists(ospd(vis_path)):
-                                os.makedirs(ospd(vis_path))
-                            if len(targets.shape) == 2:
-                                for i, flag in enumerate(target):
-                                    if flag:
-                                        plt.imsave(ospj(vis_path[:-4])+ "_" + str(i) + ".png", generate_vis(cam_normalized[i], vis_image).transpose(1, 2, 0))
-                            else:
-                                plt.imsave(ospj(vis_path)+".png", generate_vis(cam_normalized, vis_image).transpose(1, 2, 0))
-                    ###
                     
             #np.save(ospj(cam_path), cam_normalized)
             performance={}
